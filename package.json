@@ -1,0 +1,17 @@
+{
+  "name": "yanren-deno-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev:doc": "pnpm -C ./packages/doc docs:dev",
+    "dev:doc:build": "pnpm -C ./packages/doc docs:build",
+    "dev:doc:preview": "pnpm -C ./packages/doc docs:preview",
+    "dev:api": "cd ./packages/api && deno task dev",
+    "api:deploy": "cd ./packages/api && deno task deploy",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT"
+}

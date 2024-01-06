@@ -1,0 +1,20 @@
+{
+  "imports": {
+    "$hono/": "https://deno.land/x/hono@v3.6.0/",
+    "$tg/": "https://deno.land/x/grammy@v1.19.2/"
+  },
+  "tasks": {
+    "dev": "deno run --watch --allow-net ./src/index.ts",
+    "build": "deno compile --allow-net ./src/index.ts --output ./output/app",
+    "deploy": "deployctl deploy --project=bitter-dolphin-96 ./src/index.ts"
+  },
+  "lint": {
+    "include": ["src/"],
+    "rules": {}
+  },
+  "fmt": {
+    "indentWidth": 2,
+    "semiColons": false,
+    "singleQuote": true
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "folders": [
+    {
+      "name": "Root",
+      "path": "."
+    },
+    {
+      "name": "API",
+      "path": "./packages/api"
+    },
+    {
+      "name": "Doc",
+      "path": "./packages/doc"
+    }
+  ],
+  "settings": {
+    "deno.config": "./packages/api/deno.json"
+  }
+}
