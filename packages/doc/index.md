@@ -9,9 +9,9 @@ hero:
     - theme: brand
       text: API 示例
       link: /api-examples/
-    # - theme: alt
-    #   text: API Examples
-    #   link: /api-examples
+    - theme: alt
+      text: 也许你想去我主页看看
+      link: https://imyan.ren/
 
 features:
   - title: Deno
