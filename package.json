@@ -5,10 +5,10 @@
   "main": "index.js",
   "scripts": {
     "dev:doc": "pnpm -C ./packages/doc docs:dev",
-    "dev:doc:build": "pnpm -C ./packages/doc docs:build",
-    "dev:doc:preview": "pnpm -C ./packages/doc docs:preview",
+    "build:doc": "pnpm -C ./packages/doc docs:build",
+    "preview:doc": "pnpm -C ./packages/doc docs:preview",
     "dev:api": "cd ./packages/api && deno task dev",
-    "api:deploy": "cd ./packages/api && deno task deploy",
+    "deploy:api": "cd ./packages/api && deno task deploy",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
