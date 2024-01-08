@@ -2,10 +2,33 @@ import { Hono } from '$hono/mod.ts'
 import { Bot } from '$tg/mod.ts'
 import dayjs from '$dayjs/'
 
-const digitPattern = /\b(\d{4}|\d{6})\b/g
+const sms = (_hono: Hono) => {
+  const hono = _hono.basePath('/sms')
+  const digitPattern = /\b(\d{4}|\d{6})\b/g
 
-const sms = (hono: Hono) => {
-  hono.get('/sms', async (c) => {
+  const parseConetnt = (origin: string) => {
+    return origin.replace(digitPattern, '`\$1`')
+      .replace(/\_/g, '\\_')
+      .replace(/\*/g, '\\*')
+      .replace(/\[/g, '\\[')
+      .replace(/\]/g, '\\]')
+      .replace(/\(/g, '\\(')
+      .replace(/\)/g, '\\)')
+      .replace(/\~/g, '\\~')
+      .replace(/\`/g, '\\`')
+      .replace(/\>/g, '\\>')
+      .replace(/\#/g, '\\#')
+      .replace(/\+/g, '\\+')
+      .replace(/\-/g, '\\-')
+      .replace(/\=/g, '\\=')
+      .replace(/\|/g, '\\|')
+      .replace(/\{/g, '\\{')
+      .replace(/\}/g, '\\}')
+      .replace(/\./g, '\\.')
+      .replace(/\!/g, '\\!')
+  }
+
+  hono.get('/', async (c) => {
     const { user, token, from, content, device, time } = c.req.query()
 
     if (!token) {
@@ -34,18 +57,18 @@ const sms = (hono: Hono) => {
       user,
       `
 来自： ||${from}||
-内容： ${content.replace(digitPattern, '`\$1`')}
+内容： ${parseConetnt(content)}
 设备： ${device}
 时间： ${dayjs(time).format('YYYY/MM/DD HH:mm:ss')}
       `.trim(),
       {
         parse_mode: 'MarkdownV2',
       },
-    )
+    ).then(() => {
+      return bot.stop()
+    })
 
-    await bot.stop()
-
-    return c.status(204)
+    return c.body(null, 204)
   })
 }
 
