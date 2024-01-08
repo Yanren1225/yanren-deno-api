@@ -1,5 +1,8 @@
 import { Hono } from '$hono/mod.ts'
 import { Bot } from '$tg/mod.ts'
+import dayjs from '$dayjs/'
+
+const digitPattern = /\b(\d{4}|\d{6})\b/g
 
 const sms = (hono: Hono) => {
   hono.get('/sms', async (c) => {
@@ -30,13 +33,13 @@ const sms = (hono: Hono) => {
     await bot.api.sendMessage(
       user,
       `
-来自： ${from}
-内容： ${content}
+来自： ||${from}||
+内容： ${content.replace(digitPattern, '`\$1`')}
 设备： ${device}
-时间： ${time}
+时间： ${dayjs(time).format('YYYY/MM/DD HH:mm:ss')}
       `.trim(),
       {
-        parse_mode: 'Markdown',
+        parse_mode: 'MarkdownV2',
       },
     )
 

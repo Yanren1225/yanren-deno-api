@@ -1,5 +1,8 @@
 {
   "version": "3",
+  "redirects": {
+    "https://esm.sh/dayjs": "https://esm.sh/dayjs@1.11.10"
+  },
   "remote": {
     "https://cdn.skypack.dev/-/debug@v4.3.4-o4liVvMlOnQWbLSYZMXw/dist=es2019,mode=imports/optimized/debug.js": "671100993996e39b501301a87000607916d4d2d9f8fc8e9c5200ae5ba64a1389",
     "https://cdn.skypack.dev/-/ms@v2.1.2-giBDZ1IA5lmQ3ZXaa87V/dist=es2019,mode=imports/optimized/ms.js": "fd88e2d51900437011f1ad232f3393ce97db1b87a7844b3c58dd6d65562c1276",
@@ -128,6 +131,38 @@
     "https://deno.land/std@0.202.0/path/basename.ts": "bdfa5a624c6a45564dc6758ef2077f2822978a6dbe77b0a3514f7d1f81362930",
     "https://deno.land/std@0.202.0/streams/_common.ts": "3b2c1f0287ce2ad51fff4091a7d0f48375c85b0ec341468e76d5ac13bb0014dd",
     "https://deno.land/std@0.202.0/streams/iterate_reader.ts": "3b42d3056c8ccade561f1c7ac22d5e671e745933d9f9168fd3b5913588d911c3",
+    "https://deno.land/x/date_fns@v2.22.1/_lib/addLeadingZeros/index.js": "2678175ae21bc13620cba3b46d0d82ce79569989e8a250893a0509091b8ec670",
+    "https://deno.land/x/date_fns@v2.22.1/_lib/format/formatters/index.js": "42d1f20da4fa4bb5f22a73198232d70c3f00e69d1cc3126bb645df64199fae85",
+    "https://deno.land/x/date_fns@v2.22.1/_lib/format/lightFormatters/index.ts": "179147aad545251fd725a7457c47bc86c5d21c3cd57667281f63e72fcddf3fe1",
+    "https://deno.land/x/date_fns@v2.22.1/_lib/format/longFormatters/index.js": "ae386e1701ed0a6a5e3bd4bc831e2e5902ec44099415771dae519c51abcbda58",
+    "https://deno.land/x/date_fns@v2.22.1/_lib/getTimezoneOffsetInMilliseconds/index.js": "b2527365ea3b48a155aadc011d780ea98a22ae87416fcc138b23d6da6f1d4774",
+    "https://deno.land/x/date_fns@v2.22.1/_lib/getUTCDayOfYear/index.js": "96f75f05dba773ee58bdf22305605547382dd716bf871538b7bc7546b28dc4a3",
+    "https://deno.land/x/date_fns@v2.22.1/_lib/getUTCISOWeek/index.js": "1f61c47a6e34fbdfa4fb62c03743fde3af409488cc5944556fdae648750e5504",
+    "https://deno.land/x/date_fns@v2.22.1/_lib/getUTCISOWeekYear/index.js": "68bba82725321943148faf6236d81e2e7edb531c5a47e1863050bd794721b4af",
+    "https://deno.land/x/date_fns@v2.22.1/_lib/getUTCWeek/index.js": "3d9c40196a355ae3661b29b645bd87b092b35e1d3f64784ea5e88b27cb3bbb89",
+    "https://deno.land/x/date_fns@v2.22.1/_lib/getUTCWeekYear/index.js": "08e9640828d41b29a3265f2ebcc9d35697e7ddac216a5cb46cb1fb6b3ed12f39",
+    "https://deno.land/x/date_fns@v2.22.1/_lib/protectedTokens/index.js": "b804f2b7c20ef23de158e307915b187a0e9a2eaf28c73747f9250cb4d530f923",
+    "https://deno.land/x/date_fns@v2.22.1/_lib/requiredArgs/index.ts": "4be7299a12120b86d47cf33ff59c8433be40cdc010c411444e1a118de4a2212e",
+    "https://deno.land/x/date_fns@v2.22.1/_lib/startOfUTCISOWeek/index.js": "0875648c58778e08ef612a01cc853458bb145fedec7d41be669f4d672c0d3e2d",
+    "https://deno.land/x/date_fns@v2.22.1/_lib/startOfUTCISOWeekYear/index.js": "95e7f3d74de46c8c5b248a87ea15847e211e9b0522154cab7539a223f1c7f1c6",
+    "https://deno.land/x/date_fns@v2.22.1/_lib/startOfUTCWeek/index.js": "18bf39b13ad73bdc970bedfd0241101929c97e53b5603b35217be5947b57305e",
+    "https://deno.land/x/date_fns@v2.22.1/_lib/startOfUTCWeekYear/index.js": "6fdc239c3b534b802dab5ef0416decf8cad9d0f38a079e56aeaa1220677cb892",
+    "https://deno.land/x/date_fns@v2.22.1/_lib/toInteger/index.ts": "cba0112f6f9d9c8a13e00de7cc3991363a8a45d0798aa18eef25e8bbadf2e246",
+    "https://deno.land/x/date_fns@v2.22.1/addMilliseconds/index.ts": "10d5a105b6b32c36349f4ea30d791adbcbdcb3d5782f60dd077e526a77c4987a",
+    "https://deno.land/x/date_fns@v2.22.1/format/index.js": "37f93629ebf2c7a93d5b6f60e79edf308a634acd63aaabb2b50b69c2026c56be",
+    "https://deno.land/x/date_fns@v2.22.1/isValid/index.js": "8d4f51ca9507d906a532ba6c8bb8624a7b600ff4fdcf7b33b74185c997417b93",
+    "https://deno.land/x/date_fns@v2.22.1/locale/_lib/buildFormatLongFn/index.js": "2ea8f11006f8f48ac65ded35a5dd8ac837f2aad1d73f482730a9bf0491c6e4f1",
+    "https://deno.land/x/date_fns@v2.22.1/locale/_lib/buildLocalizeFn/index.js": "0a7e6ce85d2c3046007a2fb08cb9fb45e9300da522d9cad66cc8ad4fb75d1205",
+    "https://deno.land/x/date_fns@v2.22.1/locale/_lib/buildMatchFn/index.js": "bc722f6415ecceadac57d4e80125e7b4f496166b8fee1351a1abad9e895bddcc",
+    "https://deno.land/x/date_fns@v2.22.1/locale/_lib/buildMatchPatternFn/index.js": "1291177be2caba2db8692a054e47dc17e0cd43250b2a1da57c30d3d4d72c4cc8",
+    "https://deno.land/x/date_fns@v2.22.1/locale/en-US/_lib/formatDistance/index.js": "09d3fbdd422d8019ab813e299ae5d14ac258ef897498267556e13dbad41ea561",
+    "https://deno.land/x/date_fns@v2.22.1/locale/en-US/_lib/formatLong/index.js": "52fb74d1bc611b8f3ccd87988fc024cf3e9159faf7628603da71cb7bc756bc13",
+    "https://deno.land/x/date_fns@v2.22.1/locale/en-US/_lib/formatRelative/index.js": "31d02ce6bbf4d7ebd2abb2fcbb8a6204759a1f142353e8500317371730b1db0b",
+    "https://deno.land/x/date_fns@v2.22.1/locale/en-US/_lib/localize/index.js": "623f4a38b01dcdca56d1dfce7aa886b67560902f8b4fcb0e5d57f896fe438b0b",
+    "https://deno.land/x/date_fns@v2.22.1/locale/en-US/_lib/match/index.js": "2c34feeac250cdf789df040d4946cd083e5d76220272c8eb604b91b964639830",
+    "https://deno.land/x/date_fns@v2.22.1/locale/en-US/index.js": "0f8be92f548a2141d7d75d7d538576ef1b0fc528d31f5916bf2105b57bb8b554",
+    "https://deno.land/x/date_fns@v2.22.1/subMilliseconds/index.ts": "9320b22b3ee1630654bd3376f738e5413ec9ec4d4b22cf6e4b751c92ef30f828",
+    "https://deno.land/x/date_fns@v2.22.1/toDate/index.ts": "212facd1ac2edfca2a84430dad7d96c2b65509643b9d2cd40b4f1c92a6e58aef",
     "https://deno.land/x/grammy@v1.19.2/bot.ts": "8d13cd72f1512e3f76d685131c7d0db5ba51f2c877db5ac2c0aa4b0f6f876aa8",
     "https://deno.land/x/grammy@v1.19.2/composer.ts": "8660f86990f4ef2afc4854a1f2610bb8d60f88116f3a57c8e5515a77b277f82d",
     "https://deno.land/x/grammy@v1.19.2/context.ts": "4cf51ed7538750edb4379f757f6b8b3c1f3987242d58393160b463c9ca13c997",
@@ -240,6 +275,8 @@
     "https://deno.land/x/oak@v12.6.1/structured_clone.ts": "c3888b14d1eec558345bfbf13d0993d59bd45aaa8588444e35dd558c3a921cd8",
     "https://deno.land/x/oak@v12.6.1/testing.ts": "37d684d57bb8e5150fb5eb2677e66b04dcb422709cf2c5a74c1df94d52aa02e2",
     "https://deno.land/x/oak@v12.6.1/util.ts": "0a3fdffb114859c2de84e1783efa3a544af4d2af8c6f08e0d25655de9d3e69bb",
-    "https://deno.land/x/path_to_regexp@v6.2.1/index.ts": "894060567837bae8fc9c5cbd4d0a05e9024672083d5883b525c031eea940e556"
+    "https://deno.land/x/path_to_regexp@v6.2.1/index.ts": "894060567837bae8fc9c5cbd4d0a05e9024672083d5883b525c031eea940e556",
+    "https://esm.sh/dayjs@1.11.10/": "d1ff723b3aa01743a3244f46bf47fdfb2731cf72858abe27fe8a05ed41841da1",
+    "https://esm.sh/v135/dayjs@1.11.10/denonext/dayjs.mjs": "6de3caef41ea8e21568a8de0dfaacf0861ea7032d5240689677dec6b0253f860"
   }
 }
