@@ -7,8 +7,7 @@ const sms = (_hono: Hono) => {
   const digitPattern = /\b(\d{4}|\d{6})\b/g
 
   const parseConetnt = (origin: string) => {
-    return origin.replace(digitPattern, '`\$1`')
-      .replace(/\_/g, '\\_')
+    return origin.replace(/\_/g, '\\_')
       .replace(/\*/g, '\\*')
       .replace(/\[/g, '\\[')
       .replace(/\]/g, '\\]')
@@ -26,6 +25,7 @@ const sms = (_hono: Hono) => {
       .replace(/\}/g, '\\}')
       .replace(/\./g, '\\.')
       .replace(/\!/g, '\\!')
+      .replace(digitPattern, '`\$1`')
   }
 
   hono.get('/', async (c) => {
@@ -53,20 +53,24 @@ const sms = (_hono: Hono) => {
 
     bot.start()
 
-    await bot.api.sendMessage(
-      user,
-      `
+    try {
+      await bot.api.sendMessage(
+        user,
+        `
 来自： ||${from}||
 内容： ${parseConetnt(content)}
 设备： ${device}
 时间： ${dayjs(time).format('YYYY/MM/DD HH:mm:ss')}
       `.trim(),
-      {
-        parse_mode: 'MarkdownV2',
-      },
-    ).then(() => {
-      return bot.stop()
-    })
+        {
+          parse_mode: 'MarkdownV2',
+        },
+      ).then(() => {
+        return bot.stop()
+      })
+    } catch (err) {
+      return c.body(err, 400)
+    }
 
     return c.body(null, 204)
   })
