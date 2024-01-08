@@ -30,7 +30,10 @@ export default defineConfig({
         {
           text: "spotlight",
           base: "/api-examples/spotlight/",
-          items: [{ text: "/", link: "/" }],
+          items: [
+            { text: "/", link: "/" },
+            { text: "/json", link: "/json" },
+          ],
         },
       ],
     },
