@@ -1,7 +1,8 @@
 {
   "imports": {
     "$hono/": "https://deno.land/x/hono@v3.6.0/",
-    "$tg/": "https://deno.land/x/grammy@v1.19.2/"
+    "$tg/": "https://deno.land/x/grammy@v1.19.2/",
+    "@/": "./src/"
   },
   "tasks": {
     "dev": "deno run --watch --allow-net ./src/index.ts",

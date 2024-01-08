@@ -3,12 +3,7 @@ import { Bot } from '$tg/mod.ts'
 
 const sms = (hono: Hono) => {
   hono.get('/sms', async (c) => {
-    const user = c.req.query('user') || ''
-    const token = c.req.query('token') || ''
-    const from = c.req.query('from') || ''
-    const content = c.req.query('content') || ''
-    const device = c.req.query('device') || ''
-    const time = c.req.query('time') || ''
+    const { user, token, from, content, device, time } = c.req.query()
 
     if (!token) {
       return c.json<BaseResponse<null>>({
