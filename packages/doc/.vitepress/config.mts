@@ -27,6 +27,11 @@ export default defineConfig({
           base: "/api-examples/sms/",
           items: [{ text: "/", link: "/" }],
         },
+        {
+          text: "spotlight",
+          base: "/api-examples/spotlight/",
+          items: [{ text: "/", link: "/" }],
+        },
       ],
     },
 
