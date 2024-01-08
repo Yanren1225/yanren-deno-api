@@ -17,7 +17,7 @@ features:
   - title: Deno
     details: 使用 Deno 平台快速驱动
   - title: 放两个比较好看
-    details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
+    details: 确实
 #   - title: Feature C
 #     details: Lorem ipsum dolor sit amet, consectetur adipiscing elit
 ---
