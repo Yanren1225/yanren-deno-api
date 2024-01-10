@@ -12,9 +12,9 @@ const hono = new Hono()
 // Logger
 hono.use('*', logger())
 
-// hono.use('/', (c) => {
-//   return c.redirect('https://doc.deno-api.imyan.ren')
-// })
+hono.all('/', (c) => {
+  return c.redirect('https://doc.deno-api.imyan.ren')
+})
 
 // 404
 hono.notFound((c) => {
