@@ -17,87 +17,87 @@ const typeList = [
   'mini',
 ]
 
-export const spotlight = (_hono: Hono) => {
-  const hono = _hono.basePath('/spotlight')
+const spotlight = new Hono()
 
-  const getImageUrl = async (
-    locale: string,
-  ) => {
-    const reqUrl = `${url}&pl=${locale}&lc=${locale}&ctry=${locale}&time=${
-      new Date().toISOString()
-    }`
+const getImageUrl = async (
+  locale: string,
+) => {
+  const reqUrl = `${url}&pl=${locale}&lc=${locale}&ctry=${locale}&time=${
+    new Date().toISOString()
+  }`
 
-    const res: FirstResponse = await fetch(reqUrl).then(async (res) => {
-      return await res.json()
-    })
+  const res: FirstResponse = await fetch(reqUrl).then(async (res) => {
+    return await res.json()
+  })
 
-    return {
-      large: JSON.parse(res.batchrsp.items[0].item)
-        .ad['image_fullscreen_001_landscape'].u,
-      mini: JSON.parse(res.batchrsp.items[0].item)
-        .ad['image_fullscreen_001_portrait'].u,
-    }
+  return {
+    large: JSON.parse(res.batchrsp.items[0].item)
+      .ad['image_fullscreen_001_landscape'].u,
+    mini: JSON.parse(res.batchrsp.items[0].item)
+      .ad['image_fullscreen_001_portrait'].u,
+  }
+}
+
+spotlight.get('/', async (c) => {
+  const locale = c.req.query('locale') || 'en-US'
+  const type = c.req.query('type') || 'large'
+
+  if (!typeList.includes(type)) {
+    return c.json<BaseResponse<null>>({
+      code: 400,
+      message: `Invalid type, must be one of ${typeList.join(', ')}`,
+      data: null,
+      success: false,
+    }, 400)
   }
 
-  hono.get('/', async (c) => {
-    const locale = c.req.query('locale') || 'en-US'
-    const type = c.req.query('type') || 'large'
+  if (!isValidLanguageTag(locale)) {
+    return c.json<BaseResponse<null>>({
+      code: 400,
+      message: `Invalid language tag`,
+      data: null,
+      success: false,
+    }, 400)
+  }
 
-    if (!typeList.includes(type)) {
-      return c.json<BaseResponse<null>>({
-        code: 400,
-        message: `Invalid type, must be one of ${typeList.join(', ')}`,
-        data: null,
-        success: false,
-      }, 400)
-    }
+  const { large, mini } = await getImageUrl(locale)
 
-    if (!isValidLanguageTag(locale)) {
-      return c.json<BaseResponse<null>>({
-        code: 400,
-        message: `Invalid language tag`,
-        data: null,
-        success: false,
-      }, 400)
-    }
+  const image = await fetch(type === 'mini' ? mini : large)
 
-    const { large, mini } = await getImageUrl(locale)
+  c.header('Content-Type', image.headers.get('Content-Type') ?? 'image/JPEG')
+  return c.body(image.body)
+})
 
-    const image = await fetch(type === 'mini' ? mini : large)
+spotlight.get('/json', async (c) => {
+  const locale = c.req.query('locale') || 'en-US'
+  const type = c.req.query('type') || 'large'
 
-    c.header('Content-Type', image.headers.get('Content-Type') ?? 'image/JPEG')
-    return c.body(image.body)
+  if (!typeList.includes(type)) {
+    return c.json<BaseResponse<null>>({
+      code: 400,
+      message: `Invalid type, must be one of ${typeList.join(', ')}`,
+      data: null,
+      success: false,
+    }, 400)
+  }
+
+  if (!isValidLanguageTag(locale)) {
+    return c.json<BaseResponse<null>>({
+      code: 400,
+      message: `Invalid language tag`,
+      data: null,
+      success: false,
+    }, 400)
+  }
+
+  const url = await getImageUrl(locale)
+
+  return c.json<BaseResponse<{ large: string; mini: string }>>({
+    code: 200,
+    message: 'Success',
+    data: url,
+    success: true,
   })
+})
 
-  hono.get('/json', async (c) => {
-    const locale = c.req.query('locale') || 'en-US'
-    const type = c.req.query('type') || 'large'
-
-    if (!typeList.includes(type)) {
-      return c.json<BaseResponse<null>>({
-        code: 400,
-        message: `Invalid type, must be one of ${typeList.join(', ')}`,
-        data: null,
-        success: false,
-      }, 400)
-    }
-
-    if (!isValidLanguageTag(locale)) {
-      return c.json<BaseResponse<null>>({
-        code: 400,
-        message: `Invalid language tag`,
-        data: null,
-        success: false,
-      }, 400)
-    }
-
-    const url = await getImageUrl(locale)
-
-    return c.json<BaseResponse<{ large: string; mini: string }>>({
-      code: 200,
-      message: 'Success',
-      data: url,
-      success: true,
-    })
-  })
-}
+export { spotlight }

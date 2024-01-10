@@ -1,5 +1,5 @@
 import { Hono } from '$hono/mod.ts'
-import { logger } from '$hono/middleware.ts'
+import { cors, logger, poweredBy, prettyJSON } from '$hono/middleware.ts'
 
 import { kirby } from '@/routers/kirby.ts'
 import { bing } from '@/routers/bing.ts'
@@ -9,8 +9,13 @@ import { spotlight } from '@/routers/spotlight.ts'
 
 const hono = new Hono()
 
+hono.use('*', poweredBy())
+
 // Logger
 hono.use('*', logger())
+
+hono.use('*', cors())
+hono.use('*', prettyJSON())
 
 hono.all('/', (c) => {
   return c.redirect('https://doc.deno-api.imyan.ren')
@@ -22,11 +27,12 @@ hono.notFound((c) => {
   return c.text(`Not Found ${path}`, 404)
 })
 
-kirby(hono)
-bing(hono)
-basic(hono)
-sms(hono)
-spotlight(hono)
+hono.route('/', basic)
+
+hono.route('/sms', sms)
+hono.route('/bing', bing)
+hono.route('/kirby', kirby)
+hono.route('/spotlight', spotlight)
 
 Deno.serve({ port: 8000 }, hono.fetch)
 console.log('Listening on port 8000')
