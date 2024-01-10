@@ -67,7 +67,7 @@ curl {{ baseUrl }}/bing/wallpaper?type=mini -O image-mini.jpg
 
 ```json
 {  
-    "code": 400,
+    "code": 5001,
     "message": "Invalid type, must be one of large, mini",
     "data": null,
     "success": false

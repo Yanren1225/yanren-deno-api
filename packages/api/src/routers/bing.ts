@@ -1,4 +1,6 @@
 import { Hono } from '$hono/hono.ts'
+import { fail } from '@/response/base-result.ts'
+import { BaseResultCode } from '@/response/code.ts'
 
 const typeList = [
   'large',
@@ -11,12 +13,14 @@ bing.get('/wallpaper', async (c) => {
   const type = c.req.query('type') || 'large'
 
   if (!typeList.includes(type)) {
-    return c.json<BaseResponse<null>>({
-      code: 400,
-      message: `Invalid type, must be one of ${typeList.join(', ')}`,
-      data: null,
-      success: false,
-    }, 400)
+    return c.json(
+      fail(
+        null,
+        BaseResultCode.INVALID_PARAMS,
+        `Invalid type, must be one of ${typeList.join(', ')}`,
+      ),
+      400,
+    )
   }
 
   const res = await fetch(

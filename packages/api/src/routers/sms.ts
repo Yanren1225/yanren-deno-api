@@ -1,6 +1,8 @@
 import { Hono } from '$hono/mod.ts'
 import { Bot } from '$tg/mod.ts'
 import dayjs from '$dayjs/'
+import { fail } from '@/response/base-result.ts'
+import { BaseResultCode } from '@/response/code.ts'
 
 const sms = new Hono()
 
@@ -32,21 +34,25 @@ sms.get('/', async (c) => {
   const { user, token, from, content, device, time } = c.req.query()
 
   if (!token) {
-    return c.json<BaseResponse<null>>({
-      code: 400,
-      message: '缺少 token 参数',
-      data: null,
-      success: false,
-    }, 400)
+    return c.json<BaseResponse<null>>(
+      fail(
+        null,
+        BaseResultCode.INVALID_PARAMS,
+        `token is required`,
+      ),
+      400,
+    )
   }
 
   if (!user) {
-    return c.json<BaseResponse<null>>({
-      code: 400,
-      message: '缺少 user 参数',
-      data: null,
-      success: false,
-    }, 400)
+    return c.json<BaseResponse<null>>(
+      fail(
+        null,
+        BaseResultCode.INVALID_PARAMS,
+        `user is required`,
+      ),
+      400,
+    )
   }
 
   const bot = new Bot(token)

@@ -1,11 +1,22 @@
 import { Hono } from '$hono/mod.ts'
+import { success } from '@/response/base-result.ts'
 
-const kirby = new Hono()
+type Variables = {
+  sucess: (data: string) => Promise<Response>
+}
+
+const kirby = new Hono<{ Variables: Variables }>()
+
+// kirby.use('*', async (c, next) => {
+//   // deno-lint-ignore require-await
+//   c.set('sucess', async (data: string) => {
+//     return c.json(data, 200)
+//   })
+//   await next()
+// })
 
 kirby.get('/', (c) => {
-  return c.json({
-    message: 'Kirby!',
-  })
+  return c.json(success('Kirby'))
 })
 
 export { kirby }

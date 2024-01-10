@@ -1,6 +1,6 @@
-interface BaseResponse<T> {
-  code: number;
-  message: string;
-  data: T;
-  success: boolean;
+interface BaseResponse<T = unknown> {
+  code: number
+  message?: string
+  data: T
+  success: boolean
 }

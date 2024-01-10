@@ -55,7 +55,7 @@ curl {{ baseUrl }}/spotlight/json
 
 ```json
 {  
-    "code": 400,
+    "code": 5001,
     "message": "Invalid type, must be one of large, mini",
     "data": null,
     "success": false
@@ -68,7 +68,7 @@ curl {{ baseUrl }}/spotlight/json
 
 ```json
 {
-    "code": 400,
+    "code": 5001,
     "message": "Invalid language tag",
     "data": null,
     "success": false

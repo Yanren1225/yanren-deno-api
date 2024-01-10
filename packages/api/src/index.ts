@@ -6,6 +6,8 @@ import { bing } from '@/routers/bing.ts'
 import { basic } from '@/routers/basic.ts'
 import { sms } from '@/routers/sms.ts'
 import { spotlight } from '@/routers/spotlight.ts'
+import { fail } from '@/response/base-result.ts'
+import { BaseResultCode } from '@/response/code.ts'
 
 const hono = new Hono()
 
@@ -24,7 +26,7 @@ hono.all('/', (c) => {
 // 404
 hono.notFound((c) => {
   const path = c.req.path
-  return c.text(`Not Found ${path}`, 404)
+  return c.json(fail(`Not Found ${path}`, BaseResultCode.NOT_FOUND))
 })
 
 hono.route('/', basic)

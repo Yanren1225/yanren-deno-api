@@ -1,0 +1,8 @@
+root = true
+[*.{ts}]
+quote_type = single
+indent_size = 2
+trim_trailing_whitespace = false
+spaces_around_operators = true
+charset = utf-8
+insert_final_newline = true

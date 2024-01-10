@@ -54,7 +54,7 @@ curl {{ baseUrl }}/sms?token=xxx&user=xxx&from=10086&content=你话费没了&dev
 
 ```json
 {
-  "code": 400,
+  "code": 5001,
   "message": "token is required",
   "data": null,
   "success": false
@@ -67,7 +67,7 @@ curl {{ baseUrl }}/sms?token=xxx&user=xxx&from=10086&content=你话费没了&dev
 
 ```json
 {
-  "code": 400,
+  "code": 5001,
   "message": "user is required",
   "data": null,
   "success": false
