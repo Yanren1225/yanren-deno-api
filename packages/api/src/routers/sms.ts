@@ -4,7 +4,7 @@ import dayjs from '$dayjs/'
 
 const sms = (_hono: Hono) => {
   const hono = _hono.basePath('/sms')
-  const digitPattern = /\b(\d{4}|\d{6})\b/g
+  const digitPattern = /\b\d{4,6}\b/g
 
   const parseConetnt = (origin: string) => {
     return origin.replace(/\_/g, '\\_')
