@@ -6,7 +6,7 @@ import { BaseResultCode } from '@/response/code.ts'
 
 const sms = new Hono()
 
-const digitPattern = /\b\d{4,6}\b/g
+const digitPattern = /\b(\d{4,6})\b/g
 
 const parseConetnt = (origin: string) => {
   return origin.replace(/\_/g, '\\_')
