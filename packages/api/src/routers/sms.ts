@@ -6,28 +6,52 @@ import { BaseResultCode } from '@/response/code.ts'
 
 const sms = new Hono()
 
-const digitPattern = /\b(\d{4,6})\b/g
+class ContentWrapper {
+  private value: string
 
-const parseConetnt = (origin: string) => {
-  return origin.replace(/\_/g, '\\_')
-    .replace(/\*/g, '\\*')
-    .replace(/\[/g, '\\[')
-    .replace(/\]/g, '\\]')
-    .replace(/\(/g, '\\(')
-    .replace(/\)/g, '\\)')
-    .replace(/\~/g, '\\~')
-    .replace(/\`/g, '\\`')
-    .replace(/\>/g, '\\>')
-    .replace(/\#/g, '\\#')
-    .replace(/\+/g, '\\+')
-    .replace(/\-/g, '\\-')
-    .replace(/\=/g, '\\=')
-    .replace(/\|/g, '\\|')
-    .replace(/\{/g, '\\{')
-    .replace(/\}/g, '\\}')
-    .replace(/\./g, '\\.')
-    .replace(/\!/g, '\\!')
-    .replace(digitPattern, '`\$1`')
+  constructor(value: string) {
+    this.value = value
+  }
+
+  private replaceSymbol(): ContentWrapper {
+    this.value = this.value.replace(/\_/g, '\\_')
+      .replace(/\*/g, '\\*')
+      .replace(/\[/g, '\\[')
+      .replace(/\]/g, '\\]')
+      .replace(/\(/g, '\\(')
+      .replace(/\)/g, '\\)')
+      .replace(/\~/g, '\\~')
+      .replace(/\`/g, '\\`')
+      .replace(/\>/g, '\\>')
+      .replace(/\#/g, '\\#')
+      .replace(/\+/g, '\\+')
+      .replace(/\-/g, '\\-')
+      .replace(/\=/g, '\\=')
+      .replace(/\|/g, '\\|')
+      .replace(/\{/g, '\\{')
+      .replace(/\}/g, '\\}')
+      .replace(/\./g, '\\.')
+      .replace(/\!/g, '\\!')
+    return this
+  }
+
+  private replaceDigit(): ContentWrapper {
+    const digitPattern = /(\d+)/g
+    this.value = this.value.replace(digitPattern, '`\$1`')
+    return this
+  }
+
+  private replaceLink(): ContentWrapper {
+    const linkPattern = /(?:https?|ftp):\/\/[\n\S]+/g
+    this.value = this.value.replace(linkPattern, (match: string) => {
+      return `[${match}](${match})`
+    })
+    return this
+  }
+
+  toString(): string {
+    return this.replaceSymbol().replaceDigit().replaceLink().value
+  }
 }
 
 sms.get('/', async (c) => {
@@ -64,7 +88,7 @@ sms.get('/', async (c) => {
       user,
       `
 来自： ||${from}||
-内容： ${parseConetnt(content)}
+内容： ${new ContentWrapper(content).toString()}
 设备： ${device}
 时间： ${dayjs(time).format('YYYY/MM/DD HH:mm:ss')}
       `.trim(),
