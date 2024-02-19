@@ -36,7 +36,7 @@ class ContentWrapper {
   }
 
   private replaceDigit(): ContentWrapper {
-    const digitPattern = /(\d+)/g
+    const digitPattern = /\b(\d{4,6})\b/g
     this.value = this.value.replace(digitPattern, '`\$1`')
     return this
   }
