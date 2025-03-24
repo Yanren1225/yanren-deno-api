@@ -1,99 +1,109 @@
 import { Hono } from '$hono/hono.ts'
-import { isValidLanguageTag } from '@/utils/language.ts'
-import { fail, success } from '@/response/base-result.ts'
+import { fail } from '@/response/base-result.ts'
 import { BaseResultCode } from '@/response/code.ts'
+import { Context } from '$hono/context.ts'
+import { Next } from '$hono/types.ts'
 
 const url =
-  'https://arc.msn.com/v3/Delivery/Placement?pid=209567&fmt=json&rafb=0&ua=WindowsShellClient%2F0&cdm=1&disphorzres=9999&dispvertres=9999&lo=80217'
+  'https://assets.msn.cn/resolver/api/resolve/v3/config/?expType=AppConfig&expInstance=default&apptype=edgeChromium&v=20250321.466&targetScope={%22audienceMode%22:%22adult%22,%22browser%22:{%22browserType%22:%22edgeChromium%22,%22version%22:%22136%22,%22ismobile%22:%22false%22},%22deviceFormFactor%22:%22desktop%22,%22domain%22:%22ntp.msn.cn%22,%22locale%22:{%22content%22:{%22language%22:%22zh%22,%22market%22:%22cn%22},%22display%22:{%22language%22:%22zh%22,%22market%22:%22cn%22}},%22os%22:%22windows%22,%22platform%22:%22web%22}'
 
-interface FirstResponse {
-  batchrsp: {
-    var: string
-    items: { item: string }[]
-    refreshtime: string
-  }
-}
+const imageUrlPrefix = 'https://img-s.msn.cn/tenant/amp/entityid/'
 
-const typeList = [
-  'large',
-  'mini',
+const resolutionList = [
+  '100',
+  '240',
+  '720',
+  '1080',
+  '1440',
+  '2160',
 ]
+
+const formatList = ['image', 'url']
 
 const spotlight = new Hono()
 
-const getImageUrl = async (
-  locale: string,
-) => {
-  const reqUrl = `${url}&pl=${locale}&lc=${locale}&ctry=${locale}&time=${
-    new Date().toISOString()
-  }`
+const validateQuery = async (c: Context, next: Next) => {
+  const resolution = c.req.query('resolution') || '1080'
+  const random = c.req.query('random') || 'false'
+  const format = c.req.query('format') || 'image'
 
-  const res: FirstResponse = await fetch(reqUrl).then(async (res) => {
-    return await res.json()
-  })
-
-  return {
-    large: JSON.parse(res.batchrsp.items[0].item)
-      .ad['image_fullscreen_001_landscape'].u,
-    mini: JSON.parse(res.batchrsp.items[0].item)
-      .ad['image_fullscreen_001_portrait'].u,
+  if (!resolutionList.includes(resolution)) {
+    return c.json(
+      fail(
+        null,
+        BaseResultCode.INVALID_PARAMS,
+        `Invalid resolution, must be one of ${resolutionList.join(', ')}`,
+      ),
+      400,
+    )
   }
+
+  if (!formatList.includes(format)) {
+    return c.json(
+      fail(
+        null,
+        BaseResultCode.INVALID_PARAMS,
+        `Invalid format, must be one of ${formatList.join(', ')}`,
+      ),
+      400,
+    )
+  }
+
+  if (random !== 'true' && random !== 'false') {
+    return c.json(
+      fail(
+        null,
+        BaseResultCode.INVALID_PARAMS,
+        `Invalid random, must be true or false`,
+      ),
+      400,
+    )
+  }
+
+  c.set('resolution', resolution)
+  c.set('random', random)
+  c.set('format', format)
+
+  await next()
 }
 
-spotlight.get('/', async (c) => {
-  const locale = c.req.query('locale') || 'en-US'
-  const type = c.req.query('type') || 'large'
+spotlight.get('/', validateQuery, async (c) => {
+  const idList = await getImageIdList(c.get('resolution'))
 
-  if (!typeList.includes(type)) {
-    return c.json(
-      fail(
-        null,
-        BaseResultCode.INVALID_PARAMS,
-        `Invalid type, must be one of ${typeList.join(', ')}`,
-      ),
-      400,
-    )
+  const imageId = c.get('random')
+    ? idList[Math.floor(Math.random() * idList.length)]
+    : idList[idList.length - 1]
+
+  if (c.get('format') === 'url') {
+    const imageUrl = `${imageUrlPrefix}${imageId}`
+    return c.text(imageUrl)
+  } else {
+    const image = await fetch(`${imageUrlPrefix}${imageId}`)
+    c.header('Content-Type', image.headers.get('Content-Type') ?? 'image/JPEG')
+    return c.body(image.body)
   }
-
-  if (!isValidLanguageTag(locale)) {
-    return c.json(
-      fail(null, BaseResultCode.INVALID_PARAMS, `Invalid language tag`),
-    )
-  }
-
-  const { large, mini } = await getImageUrl(locale)
-
-  const image = await fetch(type === 'mini' ? mini : large)
-
-  c.header('Content-Type', image.headers.get('Content-Type') ?? 'image/JPEG')
-  return c.body(image.body)
 })
 
-spotlight.get('/json', async (c) => {
-  const locale = c.req.query('locale') || 'en-US'
-  const type = c.req.query('type') || 'large'
+const getImageIdList = async (resolution: string) => {
+  const response = await fetch(url)
+  const data = await response.json()
 
-  if (!typeList.includes(type)) {
-    return c.json(
-      fail(
-        null,
-        BaseResultCode.INVALID_PARAMS,
-        `Invalid type, must be one of ${typeList.join(', ')}`,
-      ),
-      400,
-    )
+  const originalImageId =
+    data['configs']['BackgroundImageWC/default'].properties.simpleImages.data
+
+  if (Array.isArray(originalImageId)) {
+    return (originalImageId as {
+      attribution: string
+      image: {
+        k: string
+        [key: `i${string}`]: string
+      }
+    }[]).map((item) => {
+      return item.image[`i${resolution}`]
+    })
+  } else {
+    return []
   }
-
-  if (!isValidLanguageTag(locale)) {
-    return c.json(
-      fail(null, BaseResultCode.INVALID_PARAMS, `Invalid language tag`),
-      400,
-    )
-  }
-
-  const url = await getImageUrl(locale)
-
-  return c.json(success<{ large: string; mini: string }>(url))
-})
+}
 
 export { spotlight }
